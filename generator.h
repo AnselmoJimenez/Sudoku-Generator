@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <conio.h>
+#include <windows.h>
 
 #define ROWS 9
 #define COLUMNS 9
@@ -26,7 +27,7 @@ void draw_table(int table[ROWS][COLUMNS]);
 int check_row(int entry, int row);
 
 // check entry against the column
-int check_column(int entry, int row);
+int check_column(int entry, int column);
 
 // check entry against box
 int check_box(int entry, int row, int column);

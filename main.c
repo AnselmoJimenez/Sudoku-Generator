@@ -2,6 +2,6 @@
 
 int main() 
 {
-    generate();
+    draw_table(TABLE);
     return 0;
 }
