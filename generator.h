@@ -20,9 +20,6 @@ int table[ROWS][COLUMNS] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
-// generate random number
-int random_number(int length, int offset);
-
 // check entry against the row
 int check_row(int entry, int row);
 
@@ -31,6 +28,12 @@ int check_column(int entry, int column);
 
 // check entry against box
 int check_box(int entry, int row, int column);
+
+// generate random number
+int random_number(int length, int offset);
+
+// fill diagonal boxes of the board
+void fill_diagonal(int row, int column);
 
 // generate game
 void generate(void);

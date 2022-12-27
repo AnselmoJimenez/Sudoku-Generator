@@ -27,7 +27,8 @@ void draw_table(int table[ROWS][COLUMNS]) {
 
 int main() 
 {   
+    generate();
     draw_table(table);
-    printf("random number: %d", random_number(10, 1));
+    
     return 0;
 }
