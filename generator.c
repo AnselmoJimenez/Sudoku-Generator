@@ -49,6 +49,7 @@ int check_box(int entry, int row, int column) {
     return TRUE;
 }
 
+// check the validity of the entry against rows, columns, and boxes
 int check_validity(int entry, int row, int column) 
 {
     if (check_row(entry, row) && check_column(entry, column) && check_box(entry, row, column))
@@ -58,7 +59,15 @@ int check_validity(int entry, int row, int column)
     return FALSE;
 }
 
-int random_number(int length, int offset) {
+// Insert entry into the table if valid
+void insert_entry(int entry, int row, int column) 
+{
+    // insert entry into table
+    table[row][column] = entry;
+}
+
+int random_number(int length, int offset) 
+{
     // generate number in range of length offsetted
     return (rand() % length) + offset;
 }
@@ -95,33 +104,64 @@ void fill_diagonal(int row, int column) {
     return fill_diagonal(row + 3, column + 3);
 }
 
-void fill_rows(int row, int column) {
+// Fills the rest of the board recursively
+int fill_rows(int row, int column) {
     // Complete
-    if (row > 8 && column > 5) { return; }
+    if (row == 8 && column == 9) { return TRUE; }
 
     // Increment position
     if (column == 9) 
-    {
+    { 
         column = 0;
         row++;
     }
 
-    // Check if board position is populated
-    // if it is move on
+    // If the space isn't empty
     if (table[row][column] != 0) 
     {
-        fill_rows(row, column + 1); 
-        
+        // check the next position of the table
+        if (fill_rows(row, column + 1)) { return TRUE; }
     }
-
-    for (int i = 1; i < 10; i++) 
+    // If the space is empty
+    else
     {
-        if (check_validity(i, row, column)) 
+        // Begin testing numbers 1 through 9
+        for (int i = 1; i < 10; i++) 
         {
-            table[row][column] = i;
-            fill_rows(row, column + 1);
+            // Check if the current number is valid
+            if (check_validity(i, row, column)) 
+            {
+                // Insert Entry into position
+                insert_entry(i, row, column);
+
+                // Go to next position
+                if (fill_rows(row, column + 1)) 
+                {
+                    return TRUE;
+                }
+            }
+            // Not valid entry
+            table[row][column] = 0;
         }
-        table[row][column] = 0;
+    }
+    return FALSE;
+}
+
+// removes specified elements to finish generating the board
+void remove_elements(int amount) 
+{
+    // Until the amount specified remove an element
+    for (int i = 0; i < amount; i++) {
+        // choose a random position to remove the element from board
+        int row_index = 0;
+        int column_index = 0;
+        do {
+            row_index = random_number(9, 0);
+            column_index = random_number(9, 0);
+        } while (table[row_index][column_index] == 0);
+
+        // insert 0 in that position if not already 0
+        insert_entry(0, row_index, column_index);
     }
 }
 
@@ -134,8 +174,8 @@ void generate(void) {
     fill_diagonal(0, 0);
 
     // 3.) Fill the rest of the rows recursively
-    fill_rows(0, 3);
+    fill_rows(0, 0);
 
     // 4.) Set random amount of boxes to empty
-
+    remove_elements(50);
 }
